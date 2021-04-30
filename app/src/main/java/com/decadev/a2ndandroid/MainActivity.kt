@@ -1,31 +1,35 @@
 package com.decadev.a2ndandroid
 
 import android.os.Bundle
+import android.text.InputType
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.EditText
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var RecyclerView: RecyclerView
+    lateinit var todoListRecyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
 
-        RecyclerView = findViewById(R.id.recycler_layout)
-        RecyclerView.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true)
-        RecyclerView.adapter = TodoListAdapter()
+        todoListRecyclerView = findViewById(R.id.recycler_layout)
+        todoListRecyclerView.layoutManager =
+            LinearLayoutManager(this)
+        todoListRecyclerView.adapter = TodoListAdapter()
 
-        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+
+
+        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { _ ->
+            showCreateTodoListDialog()
         }
     }
 
@@ -44,4 +48,26 @@ class MainActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
+
+    private fun showCreateTodoListDialog() {
+        var dialogTitle = "Create New Contact"
+        var positiveButtonTitle = "Add Contact"
+        var myDialog = AlertDialog.Builder(this)
+
+        var todoTitleEditText = EditText(this)
+        todoTitleEditText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_WORDS
+
+        myDialog.setTitle(dialogTitle)
+        myDialog.setView(todoTitleEditText)
+
+        myDialog.setPositiveButton(positiveButtonTitle) {dialog, _->
+            val adapter = todoListRecyclerView.adapter as TodoListAdapter
+            adapter.addNewItem(todoTitleEditText.text.toString())
+            dialog.dismiss()
+        }
+
+        myDialog.create().show()
+    }
+
+
 }

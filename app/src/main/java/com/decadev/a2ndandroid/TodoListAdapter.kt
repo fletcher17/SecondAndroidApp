@@ -2,13 +2,22 @@ package com.decadev.a2ndandroid
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.recyclerview.widget.RecyclerView
 
 class TodoListAdapter : RecyclerView.Adapter<TodoListViewHolder>() {
     var todoList = arrayListOf("Android Development", "House work", "Errands")
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoListViewHolder {
+    fun addNewItem(newList: String = "") {
+        if (newList.isEmpty()) {
+            todoList.add("Todo List " + (todoList.size+ 1))
+        } else {
+            todoList.add(newList)
+        }
+        notifyDataSetChanged()
+    }
 
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoListViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.to_do_list_layout, parent, false)
 
