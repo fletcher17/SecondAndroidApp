@@ -10,14 +10,14 @@
         android:id="@+id/cardview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_margin="5dp"
         app:cardBackgroundColor="#FAFAFA"
         app:cardCornerRadius="10dp">
 
         <TextView
             android:id="@+id/textView1"
-            android:layout_width="67dp"
-            android:layout_height="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_margin="23dp"
             android:text="TextView" />
 

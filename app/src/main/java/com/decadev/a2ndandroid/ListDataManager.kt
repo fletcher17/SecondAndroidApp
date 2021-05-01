@@ -8,8 +8,9 @@ class ListDataManager(private val context: Context) {
 
     //the saving method: this saves the list
     fun saveList(list: TaskList) {
+        //creating the storage
         val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context).edit()
-    //we need to convert the list to a set
+    //store the lists and convert the list to a set
         sharedPrefs.putStringSet(list.name, list.tasks.toHashSet())
         sharedPrefs.apply()
     }

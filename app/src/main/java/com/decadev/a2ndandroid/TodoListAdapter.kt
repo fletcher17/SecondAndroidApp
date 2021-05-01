@@ -5,17 +5,8 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.recyclerview.widget.RecyclerView
 
-class TodoListAdapter : RecyclerView.Adapter<TodoListViewHolder>() {
-    var todoList = arrayListOf("Android Development", "House work", "Errands")
+class TodoListAdapter(val lists: ArrayList<TaskList>) : RecyclerView.Adapter<TodoListViewHolder>() {
 
-    fun addNewItem(newList: String = "") {
-        if (newList.isEmpty()) {
-            todoList.add("Todo List " + (todoList.size+ 1))
-        } else {
-            todoList.add(newList)
-        }
-        notifyDataSetChanged()
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoListViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -24,10 +15,17 @@ class TodoListAdapter : RecyclerView.Adapter<TodoListViewHolder>() {
         return TodoListViewHolder(view)
     }
 
-    override fun getItemCount() = todoList.size
+    override fun getItemCount() = lists.size
 
     override fun onBindViewHolder(holder: TodoListViewHolder, position: Int) {
         holder.listPositionTextView.text = (position + 1).toString()
-        holder.listTitleTextView.text = todoList[position]
+        holder.listTitleTextView.text = lists[position].name
+    }
+
+    //we update the list
+    fun addList(list: TaskList) {
+        lists.add(list)
+        //The recyclerview needs to know that an item has been inserted
+        notifyItemInserted(lists.size-1)
     }
 }

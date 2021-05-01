@@ -15,16 +15,21 @@ import androidx.recyclerview.widget.RecyclerView
 class MainActivity : AppCompatActivity() {
 
     lateinit var todoListRecyclerView: RecyclerView
+    //now we can call the listdatamanager class
+    val listDataManager: ListDataManager = ListDataManager(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
 
+        //This reads the list
+        val lists = listDataManager.readLists()
+
         todoListRecyclerView = findViewById(R.id.recycler_layout)
         todoListRecyclerView.layoutManager =
             LinearLayoutManager(this)
-        todoListRecyclerView.adapter = TodoListAdapter()
+        todoListRecyclerView.adapter = TodoListAdapter(lists)
 
 
 
@@ -60,9 +65,15 @@ class MainActivity : AppCompatActivity() {
         myDialog.setTitle(dialogTitle)
         myDialog.setView(todoTitleEditText)
 
+
+
         myDialog.setPositiveButton(positiveButtonTitle) {dialog, _->
             val adapter = todoListRecyclerView.adapter as TodoListAdapter
-            adapter.addNewItem(todoTitleEditText.text.toString())
+            //here, we create an empty task list passing in the edit text as the title and save it
+            val list = TaskList(todoTitleEditText.text.toString())
+            listDataManager.saveList(list)
+            //we want to update the recycler view, so we save the list in the adapter
+            adapter.addList(list)
             dialog.dismiss()
         }
 
@@ -71,3 +82,5 @@ class MainActivity : AppCompatActivity() {
 
 
 }
+
+//adapter.addNewItem(todoTitleEditText.text.toString())
